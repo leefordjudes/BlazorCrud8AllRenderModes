@@ -1,0 +1,64 @@
+@page "/edit-game"
+@page "/edit-game/{id:int}"
+@using Blazor.Shared.Entities
+@using Blazor.Shared.Services
+@inject IGameService GameService
+@inject NavigationManager NavigationManager
+
+@* @rendermode InteractiveWebAssembly *@
+@rendermode InteractiveAuto
+
+@if (Id == null)
+{
+    <div class="d-flex gap-3 pb-4">
+        <h3>New Game</h3>
+    </div>
+}
+else
+{
+    <div class="d-flex gap-3 pb-4">
+        <h3>Edit @game.Name</h3>
+    </div>
+}
+<EditForm Model="game" OnSubmit="SaveGame">
+    <label>Name</label>
+    <InputText @bind-Value="game.Name">@game.Name</InputText>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @if (Id != null)
+    {
+        <button @onclick="DeleteGame" type="button" class="btn btn-danger">Delete</button>
+    }
+</EditForm>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    [SupplyParameterFromForm] Game game { get; set; } = new Game { Name = string.Empty };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        game = await GameService.GetGameById((int)Id);
+    }
+
+    async Task SaveGame()
+    {
+        if (Id == null)
+        {
+            Console.WriteLine("Create Game Called");
+            await GameService.AddGame(game);
+        }
+        else
+        {
+            Console.WriteLine("Edit Game Called");
+            await GameService.EditGame((int)Id, game);
+        }
+        NavigationManager.NavigateTo("/games");
+    }
+
+    async Task DeleteGame()
+    {
+        await GameService.DeleteGame((int)Id);
+        NavigationManager.NavigateTo("/games");
+    }
+
+}

@@ -1,0 +1,46 @@
+﻿@page "/games"
+@using Blazor.Shared.Services
+@using Blazor.Shared.Entities
+@using Blazor.Components.Shared
+
+@inject IGameService GameService
+
+@attribute [StreamRendering]
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+
+
+<div class="d-flex gap-3 pb-4">
+    <h3>GameList</h3><CreateGameButton/>
+</div>
+<div>
+    <ul>
+    @if (games == null)
+    {
+        <li><span>Loading...</span></li>
+    }
+    else if (games.Count == 0)
+    {
+        <li><span>No games found.</span></li>
+    }
+    else
+    {
+
+        @foreach (var game in games)
+        {
+            <li>@game.Name <EditGameButton Id="game.Id"/> </li>
+        }
+        
+    }
+    </ul >
+</div>
+
+
+@code {
+    List<Game>? games = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = await GameService.GetAllGames();
+        Console.WriteLine(@$"Page: games count {games.Count}");
+    }
+}
