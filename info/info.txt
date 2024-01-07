@@ -1,7 +1,7 @@
 CRUD w/ Blazor in .NET 8 🔥 All Render Modes (SSR, Server, Wasm, Auto), Entity Framework & SQL Server
 Patrick God
 https://www.youtube.com/watch?v=w8imy7LT9zY
-Time: 45.00
+
 ref:
 https://stackoverflow.com/questions/77515282/preventing-double-rendering-with-the-combination-of-interactive-server-render-m
 
