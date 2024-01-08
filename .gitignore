@@ -5,7 +5,8 @@
 .env
 .idea/
 Images/
-app.db*
+Blazor/app.db
+*/app.db
 
 # User-specific files
 *.rsuser

@@ -1,13 +1,25 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazor.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu/>
     </div>
 
     <main>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @* <AuthorizeView >
+                <Authorized> *@
+                    <a @onclick="Logout" href="javascript:void(0)">Logout</a>
+                @* </Authorized>
+                <NotAuthorized> *@
+                    <a href="/login">Login</a>
+                @* </NotAuthorized>
+            </AuthorizeView> *@
         </div>
 
         <article class="content px-4">
@@ -21,3 +33,40 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code{
+
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
